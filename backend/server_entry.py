@@ -10,12 +10,10 @@ if parent_dir not in sys.path:
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
-# Default to SQLite database if DATABASE_URL is not set for standalone desktop use
+# Default to PostgreSQL database if DATABASE_URL is not set
 if "DATABASE_URL" not in os.environ:
-    db_path = os.path.join(os.path.expanduser("~"), ".inventory_app", "inventory.db")
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
-    os.environ["DATABASE_URL"] = f"sqlite:///{db_path}"
-    print(f"[Desktop Backend] Using SQLite database at: {db_path}")
+    os.environ["DATABASE_URL"] = "postgresql://postgres:postgres@127.0.0.1:5434/inventory"
+    print("[Desktop Backend] Using PostgreSQL database at: 127.0.0.1:5434")
 
 from backend.main import app
 
