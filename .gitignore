@@ -1,0 +1,20 @@
+# Python Virtual Environments
+.venv/
+.vevn/
+venv/
+env/
+
+# Python Cache & Testing
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Databases & Local Data
+*.db
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+dist/
+build/
