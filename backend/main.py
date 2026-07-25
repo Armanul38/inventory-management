@@ -65,3 +65,7 @@ def read_root():
         "message": "Inventory & Production Management System API v2.0 is running.",
         "docs": "/docs",
     }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}

@@ -18,6 +18,14 @@ htmlcov/
 *.db
 *.sqlite3
 
+# Desktop App Build Artifacts
+dist-desktop/
+desktop/node_modules/
+build/
+inventory-backend.spec
+__pycache__/
+desktop/bin/
+
 # Node / JavaScript / Next.js / Frontend
 node_modules/
 .pnp

@@ -1,0 +1,46 @@
+{
+  "name": "inventory-desktop",
+  "version": "1.0.0",
+  "description": "Desktop Application for Inventory & Production Management System",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^34.5.8",
+    "electron-builder": "^25.1.8",
+    "serve-handler": "^6.1.7"
+  },
+  "build": {
+    "appId": "com.inventory.app",
+    "productName": "Inventory Flow Desktop",
+    "directories": {
+      "output": "../dist-desktop"
+    },
+    "files": [
+      "main.js",
+      "bin/**/*",
+      "../frontend/out/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "bin/inventory-backend",
+        "to": "inventory-backend",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "icon.ico"
+    }
+  }
+}

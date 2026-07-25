@@ -20,16 +20,17 @@ export function exportToCSV<T extends Record<string, any>>(
   const rows = data.map((row) => {
     return columns
       .map((col) => {
-        let val = row[col.key];
-        if (val === null || val === undefined) {
-          val = "";
-        } else if (typeof val === "object") {
-          val = JSON.stringify(val);
+        const rawVal = (row as any)[col.key];
+        let valStr: string;
+        if (rawVal === null || rawVal === undefined) {
+          valStr = "";
+        } else if (typeof rawVal === "object") {
+          valStr = JSON.stringify(rawVal);
         } else {
-          val = String(val);
+          valStr = String(rawVal);
         }
         // Escape quotes
-        return `"${val.replace(/"/g, '""')}"`;
+        return `"${valStr.replace(/"/g, '""')}"`;
       })
       .join(",");
   });
