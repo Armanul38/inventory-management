@@ -43,8 +43,6 @@ const getApiBase = () => {
   return cleanUrl.endsWith("/api/v1") ? cleanUrl : `${cleanUrl}/api/v1`;
 };
 
-const API_BASE = getApiBase();
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -64,7 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserInfo = async (authToken: string) => {
     try {
-      const res = await fetch(`${API_BASE}/auth-users/me`, {
+      const apiBase = getApiBase();
+      const res = await fetch(`${apiBase}/auth-users/me`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -91,7 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       formData.append("username", email); // OAuth2 expects username
       formData.append("password", password);
 
-      const res = await fetch(`${API_BASE}/auth-users/login`, {
+      const apiBase = getApiBase();
+      const res = await fetch(`${apiBase}/auth-users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -137,7 +137,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       headers.set("Content-Type", "application/json");
     }
 
-    const res = await fetch(`${API_BASE}${path}`, {
+    const apiBase = getApiBase();
+    const res = await fetch(`${apiBase}${path}`, {
       ...options,
       headers,
     });
