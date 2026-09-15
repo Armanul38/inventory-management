@@ -1,0 +1,41 @@
+services:
+  # Backend API Service
+  - type: web
+    name: inventory-backend
+    runtime: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: inventory-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+
+  # Frontend Web Service
+  - type: web
+    name: inventory-frontend
+    runtime: docker
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: inventory-backend
+          property: url
+
+databases:
+  - name: inventory-db
+    databaseName: inventory
+    user: postgres
+    plan: free
