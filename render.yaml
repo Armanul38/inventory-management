@@ -28,12 +28,12 @@ services:
         fromService:
           type: web
           name: inventory-backend
-          property: url
+          property: host
       - key: NEXT_PUBLIC_API_URL
         fromService:
           type: web
           name: inventory-backend
-          property: url
+          property: host
 
 databases:
   - name: inventory-db
