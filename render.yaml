@@ -32,10 +32,10 @@ services:
         fromService:
           type: web
           name: inventory-backend
-          property: url
+          property: host
 
 databases:
   - name: inventory-db
     databaseName: inventory
-    user: postgres
+    databaseUser: inventory_user
     plan: free
