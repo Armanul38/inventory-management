@@ -26,13 +26,13 @@ const getApiBase = () => {
   let envUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (typeof window !== "undefined") {
-    if (!envUrl || envUrl.includes("localhost")) {
-      const hostname = window.location.hostname;
-      if (hostname.includes("onrender.com")) {
-        const backendHost = hostname.replace("inventory-frontend", "inventory-backend");
-        envUrl = `https://${backendHost}`;
-      }
+    if (envUrl && !envUrl.includes("localhost")) {
+      let target = envUrl.startsWith("http") ? envUrl : `https://${envUrl}`;
+      target = target.replace(/\/+$/, "");
+      return target.endsWith("/api/v1") ? target : `${target}/api/v1`;
     }
+    // Fallback to relative proxy route handled by Next.js rewrites
+    return "/api/v1";
   }
 
   envUrl = envUrl || "http://localhost:8000";
