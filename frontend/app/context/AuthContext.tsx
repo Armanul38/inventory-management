@@ -22,7 +22,13 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const getApiBase = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const cleanUrl = envUrl.replace(/\/+$/, "");
+  return cleanUrl.endsWith("/api/v1") ? cleanUrl : `${cleanUrl}/api/v1`;
+};
+
+const API_BASE = getApiBase();
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
