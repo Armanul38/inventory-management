@@ -19,23 +19,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: backend/requirements.txt
 
       - name: Install Backend Dependencies
-        working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
 
       - name: Run Pytest
-        working-directory: ./backend
         env:
           DATABASE_URL: "sqlite:///./test.db"
           JWT_SECRET: "ci-test-secret-key-12345"
-          PYTHONPATH: "..:."
+          PYTHONPATH: "."
         run: |
-          python -m pytest test_main.py
+          python -m pytest backend/test_main.py
 
   frontend-build:
     name: Frontend Lint & Build
