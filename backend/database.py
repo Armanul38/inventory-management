@@ -1,7 +1,11 @@
 from sqlmodel import SQLModel, create_engine, Session, select
 from backend.config import settings
 
-engine = create_engine(settings.DATABASE_URL, echo=True)
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(db_url, echo=True)
 
 def get_session():
     with Session(engine) as session:
