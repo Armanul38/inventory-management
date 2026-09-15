@@ -23,24 +23,20 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const getApiBase = () => {
-  let envUrl = process.env.NEXT_PUBLIC_API_URL;
-
+  // In the browser, always use the relative path so Next.js rewrites
+  // transparently proxy to the backend (avoids CORS, no env var needed).
   if (typeof window !== "undefined") {
-    if (envUrl && !envUrl.includes("localhost")) {
-      let target = envUrl.startsWith("http") ? envUrl : `https://${envUrl}`;
-      target = target.replace(/\/+$/, "");
-      return target.endsWith("/api/v1") ? target : `${target}/api/v1`;
-    }
-    // Fallback to relative proxy route handled by Next.js rewrites
     return "/api/v1";
   }
 
-  envUrl = envUrl || "http://localhost:8000";
-  if (!envUrl.startsWith("http://") && !envUrl.startsWith("https://")) {
-    envUrl = `https://${envUrl}`;
-  }
-  const cleanUrl = envUrl.replace(/\/+$/, "");
-  return cleanUrl.endsWith("/api/v1") ? cleanUrl : `${cleanUrl}/api/v1`;
+  // Server-side rendering: use the full backend URL directly.
+  const envUrl =
+    process.env.BACKEND_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:8000";
+  const withProto = envUrl.startsWith("http") ? envUrl : `https://${envUrl}`;
+  const clean = withProto.replace(/\/+$/, "");
+  return clean.endsWith("/api/v1") ? clean : `${clean}/api/v1`;
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

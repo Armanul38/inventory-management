@@ -24,11 +24,16 @@ services:
     plan: free
     healthCheckPath: /
     envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: inventory-backend
+          property: url
       - key: NEXT_PUBLIC_API_URL
         fromService:
           type: web
           name: inventory-backend
-          property: host
+          property: url
 
 databases:
   - name: inventory-db
